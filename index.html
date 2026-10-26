@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>تخمين شخصيات هاري بوتر</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ===== شاشة الإعداد ===== -->
+    <div id="screen-setup" class="screen active">
+      <div class="container">
+        <h1 class="main-title">تخمين شخصيات هاري بوتر</h1>
+        <p class="subtitle">أدخل أسماء اللاعبين عشان نبدأ</p>
+
+        <div class="input-group">
+          <label>اللاعب الأول</label>
+          <input
+            type="text"
+            id="input-p1"
+            placeholder="اكتب اسمك هنا"
+            maxlength="20"
+          />
+        </div>
+        <div class="input-group">
+          <label>اللاعب الثاني</label>
+          <input
+            type="text"
+            id="input-p2"
+            placeholder="اكتب اسمك هنا"
+            maxlength="20"
+          />
+        </div>
+
+        <button id="btn-start" class="btn btn-primary btn-big">
+          ابدأ اللعبة
+        </button>
+
+        <p class="rules">
+          كل لاعب عنده <strong>10 أسئلة</strong> يسألها للاعب التاني.<br />
+          الأسئلة بـ "نعم" أو "لا" — وكل تخمين غلط بيخصم من أسئلتك.<br />
+          لو أسئلتك خلصت، التخمين بيبقى إجباري — ولو غلطت هتخسر!<br />
+          اللي يعرف شخصية التاني صح يكسب.
+        </p>
+      </div>
+    </div>
+
+    <!-- ===== شاشة كشف البطاقات ===== -->
+    <div id="screen-reveal" class="screen">
+      <div class="container">
+        <div class="round-badge">بطاقتك السرية</div>
+        <h2 class="cover-title" id="reveal-player-name">—</h2>
+
+        <div id="reveal-cover">
+          <p class="cover-text">
+            خد الموبايل بعيد عن اللاعب التاني<br />
+            واضغط لعرض بطاقتك
+          </p>
+          <button id="btn-show-card" class="btn btn-primary btn-big">
+            اعرض بطاقتي
+          </button>
+        </div>
+
+        <div id="reveal-card" hidden>
+          <div class="card-display">
+            <div class="card-cat-badge">شخصية</div>
+            <div class="card-portrait">
+              <span class="card-initial" id="reveal-initial">?</span>
+              <img
+                id="reveal-image"
+                class="card-img"
+                alt=""
+                onerror="this.style.display='none'"
+              />
+            </div>
+            <h1 class="card-name" id="reveal-name">—</h1>
+          </div>
+          <p class="reveal-warn">محدش يشوف البطاقة غيرك!</p>
+          <button id="btn-hide-card" class="btn btn-primary btn-big">
+            حفظتها — التالي
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== شاشة اللعب ===== -->
+    <div id="screen-game" class="screen">
+      <div class="container">
+        <div class="turn-badge">دور</div>
+        <h2 class="turn-name" id="game-turn-name">—</h2>
+        <p class="turn-action">
+          اسأل <strong id="game-other-name">—</strong> سؤال بصوت عالي<br />
+          وإجابته تكون <strong>نعم</strong> أو <strong>لا</strong>
+        </p>
+
+        <div class="question-boxes">
+          <div class="question-box" id="q-box-1">
+            <span class="q-label" id="q-label-1">—</span>
+            <span class="q-count" id="q-count-1">10</span>
+          </div>
+          <div class="question-box" id="q-box-2">
+            <span class="q-label" id="q-label-2">—</span>
+            <span class="q-count" id="q-count-2">10</span>
+          </div>
+        </div>
+
+        <div class="game-actions">
+          <button id="btn-asked" class="btn btn-primary btn-big">
+            سألت سؤال
+          </button>
+          <button id="btn-guess" class="btn btn-success btn-big">
+            أعتقد إني عرفت
+          </button>
+        </div>
+
+        <p class="warning-text" id="warning-text" hidden></p>
+
+        <button id="btn-peek" class="btn-peek">شوف بطاقتك (سراً)</button>
+      </div>
+    </div>
+
+    <!-- ===== شاشة التخمين ===== -->
+    <div id="screen-guess" class="screen">
+      <div class="container">
+        <h2 class="turn-name" id="guess-title">—</h2>
+        <p class="subtitle">
+          إيه هي شخصية <strong id="guess-other-name">—</strong>؟
+        </p>
+
+        <input
+          type="text"
+          id="guess-input"
+          class="guess-input"
+          list="guess-options"
+          placeholder="اكتب التخمين هنا"
+        />
+        <datalist id="guess-options"></datalist>
+
+        <div class="game-actions">
+          <button id="btn-submit-guess" class="btn btn-success btn-big">
+            تحقق من التخمين
+          </button>
+          <button id="btn-back-to-game" class="btn btn-danger">رجوع</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== شاشة النهاية ===== -->
+    <div id="screen-end" class="screen">
+      <div class="container">
+        <h2 class="end-title" id="end-title">—</h2>
+        <p class="subtitle" id="end-subtitle">—</p>
+
+        <div class="final-cards">
+          <div class="final-card">
+            <div class="final-portrait">
+              <span class="final-initial" id="final-p1-initial">?</span>
+              <img
+                id="final-p1-image"
+                class="final-img"
+                alt=""
+                onerror="this.style.display='none'"
+              />
+            </div>
+            <div class="final-info">
+              <span class="final-player" id="final-p1-name">—</span>
+              <span class="final-card-name" id="final-p1-card">—</span>
+            </div>
+          </div>
+          <div class="final-card">
+            <div class="final-portrait">
+              <span class="final-initial" id="final-p2-initial">?</span>
+              <img
+                id="final-p2-image"
+                class="final-img"
+                alt=""
+                onerror="this.style.display='none'"
+              />
+            </div>
+            <div class="final-info">
+              <span class="final-player" id="final-p2-name">—</span>
+              <span class="final-card-name" id="final-p2-card">—</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="btn-restart" class="btn btn-primary btn-big">
+          العب من جديد
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== نافذة نظرة سريعة على البطاقة ===== -->
+    <div id="peek-overlay" class="peek-overlay" hidden>
+      <div class="peek-content">
+        <p class="peek-warning">متأكد إن اللاعب التاني مش شايف؟</p>
+        <div class="card-display">
+          <div class="card-cat-badge">شخصية</div>
+          <div class="card-portrait">
+            <span class="card-initial" id="peek-initial">?</span>
+            <img
+              id="peek-image"
+              class="card-img"
+              alt=""
+              onerror="this.style.display='none'"
+            />
+          </div>
+          <h1 class="card-name" id="peek-name">—</h1>
+        </div>
+        <button id="btn-close-peek" class="btn btn-primary">
+          تمام، اخفيها
+        </button>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("sw.js")
+            .then((reg) => console.log("✅ Service Worker اتسجل:", reg.scope))
+            .catch((err) => console.error("❌ فشل تسجيل Service Worker:", err));
+        });
+      }
+    </script>
+  </body>
+</html>
